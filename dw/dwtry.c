@@ -12,10 +12,10 @@
 /*
  * avail API calls (as per dw user guide from cray web site):
  * 
- * int dw_get_stripe_configuration(int fd,   /* open fd of DW file/dir */
- *        int *stripe_size,                  /* OUT */
- *        int *stripe_width,                 /* OUT: max# of stripes avail */
- *        int *starting_index);              /* OUT: 0..stripe_width */
+ * int dw_get_stripe_configuration(int fd,   // open fd of DW file/dir 
+ *        int *stripe_size,                  // OUT 
+ *        int *stripe_width,                 // OUT: max# of stripes avail 
+ *        int *starting_index);              // OUT: 0..stripe_width 
  *  ret 0 or -errno
  *
  */
