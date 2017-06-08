@@ -1,0 +1,10 @@
+#!/bin/bash
+#SBATCH --job-name dwtry
+#SBATCH --time=0:05:00
+#SBATCH --nodes=1
+#SBATCH --constraint=haswell
+#SBATCH --output /users/%u/joblogs/dwtry-%j.out
+#DW jobdw access_mode=striped capacity=100MiB type=scratch
+
+srun -N 1 -n 1 ./dwtry
+exit 0
