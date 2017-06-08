@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
 
@@ -41,7 +42,7 @@ int main(int argc, char **argv) {
 
     rv = dw_get_stripe_configuration(fd, &size, &width, &start);
     if (rv < 0) 
-        errx(1, "get stripe cfg err: %s", strerror(-rv);
+        errx(1, "get stripe cfg err: %s", strerror(-rv));
     printf("top-level stripe cfg: size=%d, width=%d, start=%d\n",
            size, width, start);
 
