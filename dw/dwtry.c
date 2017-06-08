@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
     printf("attempt on stdin: %d\n", 
-         dw_get_stripe_configuration(0, &size, &width, &start);
+         dw_get_stripe_configuration(0, &size, &width, &start));
     rv = dw_get_stripe_configuration(fd, &size, &width, &start);
     if (rv < 0) {
         fprintf(stderr, "dw_get_stripe_configuration failed %d\n", rv);
