@@ -96,6 +96,7 @@
  */
 
 int cat(char *file) {
+    int fd;
     char buf[512];
     ssize_t rv;
     fd = open(file, O_RDONLY);
@@ -179,8 +180,8 @@ int main(int argc, char **argv) {
     cat("/lustre/ttscratch1/ccranor/st/ok");
 
     printf("writing more to DW\n");
-#define MSG "looks like I just wrote more!\n"
-    if ((sret = write(fd, MSG, sizeof(MSG)-1)) != sizeof(MSG)-1)
+#define MSG2 "looks like I just wrote more!\n"
+    if ((sret = write(fd, MSG2, sizeof(MSG2)-1)) != sizeof(MSG2)-1)
         errx(1, "write bad ret %d", sret);
     
     printf("relooking at files\n");
