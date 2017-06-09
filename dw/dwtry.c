@@ -97,7 +97,7 @@
 
 int cat(char *file) {
     int fd;
-    char buf[512], *bp;
+    char buf[512];
     ssize_t rv;
     fd = open(file, O_RDONLY);
     if (fd < 0) return(-1);
@@ -116,7 +116,7 @@ int main(int argc, char **argv) {
     int fd, rv;
     int size, width, start;
     ssize_t sret;
-    char buf[BUFSIZ], buf2[BUFSIZ], buf3[BUFSIZ];
+    char buf[BUFSIZ], buf2[BUFSIZ], buf3[BUFSIZ], *bp;
     setlinebuf(stdout);
     printf("datawarp test program\n");
     dw = getenv("DW_JOB_STRIPED");
