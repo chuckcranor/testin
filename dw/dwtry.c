@@ -97,7 +97,7 @@
 
 int cat(char *file) {
     int fd;
-    char buf[512];
+    char buf[512], *bp;
     ssize_t rv;
     fd = open(file, O_RDONLY);
     if (fd < 0) return(-1);
@@ -203,5 +203,9 @@ int main(int argc, char **argv) {
     cat(buf2);
     cat("/lustre/ttscratch1/ccranor/st/ok");
 
+    bp = dw_get_mds_path(dw, 1 /*XXX: random key*/);
+    printf("dw_get_mds_path key=1: %s\n", bp);
+    if (bp) free(bp);
+    
     exit(0);
 }
