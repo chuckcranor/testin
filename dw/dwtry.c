@@ -142,7 +142,17 @@ int main(int argc, char **argv) {
     printf("attempting stageout for non-dw bogus filename\n");
     rv = dw_stage_file_out("/tmp/bogus", "/lustre/ttscratch1/ccranor/st/ok",
              DW_STAGE_IMMEDIATE);
-    printf("bogus result: %s\n", strerror(-rv));
+    printf("non-dw bogus result: %s\n", strerror(-rv));
+
+    printf("attempting stageout for dw bogus filename\n");
+    rv = dw_stage_file_out(buf3, "/lustre/ttscratch1/ccranor/st/ok",
+             DW_STAGE_IMMEDIATE);
+    printf("dw bogus result: %s\n", strerror(-rv));
+
+    printf("attempting stageout for good dw filename (that is open)\n");
+    rv = dw_stage_file_out(buf2, "/lustre/ttscratch1/ccranor/st/ok",
+             DW_STAGE_IMMEDIATE);
+    printf("real stage result: %s\n", strerror(-rv));
 
     exit(0);
 }
