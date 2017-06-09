@@ -100,12 +100,14 @@ char *dw = NULL;
 int main(int argc, char **argv) {
     int fd, rv;
     int size, width, start;
-    char buf[BUFSIZ], buf2[BUFSIZ];
+    ssize_t ret;
+    char buf[BUFSIZ], buf2[BUFSIZ], buf3[BUFSIZ];
     setlinebuf(stdout);
     printf("datawarp test program\n");
-    fprintf(stderr, "datawarp test program (stderr)\n");
     dw = getenv("DW_JOB_STRIPED");
     if (!dw) errx(1, "datawarp not configured");
+    if (dw[strlen(dw)-1] != '/') 
+        errx(1, "DW_JOB_STRIPED does not end in a slash");
 
     printf("config test\n");
     rv = dw_get_stripe_configuration(0, &size, &width, &start);
@@ -125,12 +127,22 @@ int main(int argc, char **argv) {
     close(fd);
 
     printf("staging test\n");
-    snprintf(buf, sizeof(buf), "%s/testin", dw);
-    snprintf(buf2, sizeof(buf2), "%s/testin/file", dw);
+    snprintf(buf, sizeof(buf), "%stestin", dw);
+    snprintf(buf2, sizeof(buf2), "%stestin/file", dw);
+    snprintf(buf3, sizeof(buf2), "%stestin/bogus", dw);
     if (mkdir(buf, 0777) < 0) err(1, "mkdir %s", buf);
     printf("mkdir %s success\n", buf);
     if ((fd = open(buf2, O_WRONLY|O_CREAT, 0666)) < 0) err(1, "open %s", buf2);
     printf("file create %s success\n", buf2);
+
+#define MSG "Hello world, part1!\n"
+    if ((sret = write(fd, MSG, sizeof(MSG)-1)) != sizeof(MSG)-1)
+        errx(1, "write bad ret %d", sret);
+
+    printf("attempting stageout for non-dw bogus filename\n");
+    ret = dw_stage_file_out("/tmp/bogus", "/lustre/ttscratch1/ccranor/st/ok",
+             STAGE_IMMEDIATE);
+    printf("bogus result: %s\n", strerror(-ret));
 
     exit(0);
 }
