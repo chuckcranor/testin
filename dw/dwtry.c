@@ -95,6 +95,20 @@
  * note that failure list can change while it is being walked
  */
 
+int cat(char *file) {
+    char buf[512];
+    ssize_t rv;
+    fd = open(file, O_RDONLY);
+    if (fd < 0) return(-1);
+    printf("content of %s:\n", file);
+    while ((rv = read(fd, buf, sizeof(buf))) > 0) {
+      if (rv < 0) warn("read %s failed", file);
+      write(fileno(stdout), buf, rv);   /* ignore errors */
+    }
+    printf("\nEND OF FILE (%s)\n", file);
+    return(0);
+}
+
 char *dw = NULL;
 
 int main(int argc, char **argv) {
@@ -156,8 +170,37 @@ int main(int argc, char **argv) {
     if (rv != 0) errx(1, "stage didn't start!");
 
     printf("waiting for stage to complete\n");
+    sleep(5);   /* let it finish first to see if this still works */
     rv = dw_wait_file_stage(buf2);
     printf("state complete wait ret: %s\n", strerror(-rv));
+
+    printf("looking at files\n");
+    cat(buf2);
+    cat("/lustre/ttscratch1/ccranor/st/ok");
+
+    printf("writing more to DW\n");
+#define MSG "looks like I just wrote more!\n"
+    if ((sret = write(fd, MSG, sizeof(MSG)-1)) != sizeof(MSG)-1)
+        errx(1, "write bad ret %d", sret);
+    
+    printf("relooking at files\n");
+    cat(buf2);
+    cat("/lustre/ttscratch1/ccranor/st/ok");
+
+    printf("attempting second stageout for good dw filename (that is open)\n");
+    rv = dw_stage_file_out(buf2, "/lustre/ttscratch1/ccranor/st/ok",
+             DW_STAGE_IMMEDIATE);
+    printf("real stage result: %s\n", strerror(-rv));
+    if (rv != 0) errx(1, "stage didn't start!");
+
+    printf("waiting for stage to complete\n");
+    sleep(5);   /* let it finish first to see if this still works */
+    rv = dw_wait_file_stage(buf2);
+    printf("state complete wait ret: %s\n", strerror(-rv));
+
+    printf("looking at files after second stage\n");
+    cat(buf2);
+    cat("/lustre/ttscratch1/ccranor/st/ok");
 
     exit(0);
 }
