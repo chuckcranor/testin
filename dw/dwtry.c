@@ -101,6 +101,7 @@ int main(int argc, char **argv) {
     int fd, rv;
     int size, width, start;
     char buf[BUFSIZ], buf2[BUFSIZ];
+    setlinebuf(stdout);
     printf("datawarp test program\n");
     fprintf(stderr, "datawarp test program (stderr)\n");
     dw = getenv("DW_JOB_STRIPED");
