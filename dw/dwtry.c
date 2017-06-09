@@ -100,7 +100,7 @@ char *dw = NULL;
 int main(int argc, char **argv) {
     int fd, rv;
     int size, width, start;
-    ssize_t ret;
+    ssize_t sret;
     char buf[BUFSIZ], buf2[BUFSIZ], buf3[BUFSIZ];
     setlinebuf(stdout);
     printf("datawarp test program\n");
@@ -140,9 +140,9 @@ int main(int argc, char **argv) {
         errx(1, "write bad ret %d", sret);
 
     printf("attempting stageout for non-dw bogus filename\n");
-    ret = dw_stage_file_out("/tmp/bogus", "/lustre/ttscratch1/ccranor/st/ok",
+    rv = dw_stage_file_out("/tmp/bogus", "/lustre/ttscratch1/ccranor/st/ok",
              DW_STAGE_IMMEDIATE);
-    printf("bogus result: %s\n", strerror(-ret));
+    printf("bogus result: %s\n", strerror(-rv));
 
     exit(0);
 }
