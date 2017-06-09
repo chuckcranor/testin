@@ -153,6 +153,11 @@ int main(int argc, char **argv) {
     rv = dw_stage_file_out(buf2, "/lustre/ttscratch1/ccranor/st/ok",
              DW_STAGE_IMMEDIATE);
     printf("real stage result: %s\n", strerror(-rv));
+    if (rv != 0) errx(1, "stage didn't start!");
+
+    printf("waiting for stage to complete\n");
+    rv = dw_wait_file_stage(buf2);
+    printf("state complete wait ret: %s\n", strerror(-rv));
 
     exit(0);
 }
