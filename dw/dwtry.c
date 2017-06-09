@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
 
     printf("attempting stageout for non-dw bogus filename\n");
     ret = dw_stage_file_out("/tmp/bogus", "/lustre/ttscratch1/ccranor/st/ok",
-             STAGE_IMMEDIATE);
+             DW_STAGE_IMMEDIATE);
     printf("bogus result: %s\n", strerror(-ret));
 
     exit(0);
