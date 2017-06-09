@@ -102,6 +102,7 @@ int main(int argc, char **argv) {
     int size, width, start;
     char buf[BUFSIZ], buf2[BUFSIZ];
     printf("datawarp test program\n");
+    fprintf(stderr, "datawarp test program (stderr)\n");
     dw = getenv("DW_JOB_STRIPED");
     if (!dw) errx(1, "datawarp not configured");
 
@@ -124,10 +125,10 @@ int main(int argc, char **argv) {
 
     printf("staging test\n");
     snprintf(buf, sizeof(buf), "%s/testin", dw);
-    snprintf(buf2, sizeof(buf), "%s/testin/file", dw);
+    snprintf(buf2, sizeof(buf2), "%s/testin/file", dw);
     if (mkdir(buf, 0777) < 0) err(1, "mkdir %s", buf);
     printf("mkdir %s success\n", buf);
-    if ((fd = open(buf2, O_WRONLY, 0666)) < 0) err(1, "open %s", buf2);
+    if ((fd = open(buf2, O_WRONLY|O_CREAT, 0666)) < 0) err(1, "open %s", buf2);
     printf("file create %s success\n", buf2);
 
     exit(0);
